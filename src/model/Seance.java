@@ -4,16 +4,16 @@ public class Seance {
     private int idSeance;
     private int idClasse;
     private int idEnseignant;
-    private int idMatiere;
+    private String matiere;
     private String jour;
     private String heureDebut;
     private String heureFin;
 
-    public Seance(int idSeance, int idClasse, int idEnseignant, int idMatiere, String jour, String heureDebut, String heureFin) {
+    public Seance(int idSeance, int idClasse, int idEnseignant, String matiere, String jour, String heureDebut, String heureFin) {
         this.idSeance = idSeance;
         this.idClasse = idClasse;
         this.idEnseignant = idEnseignant;
-        this.idMatiere = idMatiere;
+        this.matiere = matiere;
         this.jour = jour;
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
@@ -43,12 +43,12 @@ public class Seance {
         this.idEnseignant = idEnseignant;
     }
 
-    public int getIdMatiere() {
-        return idMatiere;
+    public String  getMatiere() {
+        return matiere;
     }
 
-    public void setIdMatiere(int idMatiere) {
-        this.idMatiere = idMatiere;
+    public void setMatiere(String  matiere) {
+        this.matiere = matiere;
     }
 
     public String getJour() {

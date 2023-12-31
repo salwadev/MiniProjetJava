@@ -1,7 +1,5 @@
-
 import javax.swing.*;
-import controller.EnseignantController;
-import view.EnseignantView;
+import view.FirstInterface;
 
 public class MainFrame {
     public static void main(String[] args) {
@@ -13,10 +11,9 @@ public class MainFrame {
     }
 
     private static void createAndShowGUI() {
-        EnseignantView enseignantView = new EnseignantView();
-        EnseignantController enseignantController = new EnseignantController(enseignantView);
+        FirstInterface firstinterfaceView = new FirstInterface();
 
-        JFrame frame = enseignantView.getFrame();
+        JFrame frame = firstinterfaceView.getFrame();
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
