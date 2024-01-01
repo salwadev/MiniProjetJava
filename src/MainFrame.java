@@ -1,3 +1,4 @@
+
 import javax.swing.*;
 import view.FirstInterface;
 
@@ -11,9 +12,9 @@ public class MainFrame {
     }
 
     private static void createAndShowGUI() {
-        FirstInterface firstinterfaceView = new FirstInterface();
+        FirstInterface FirstInterface = new FirstInterface();
 
-        JFrame frame = firstinterfaceView.getFrame();
+        JFrame frame = FirstInterface.getFrame();
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);

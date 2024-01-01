@@ -1,11 +1,8 @@
 package view;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.List;
-import controller.ActionController;
-import model.Seance;
+import javax.swing.table.DefaultTableModel;
 
 public class SecondInterface {
     private JFrame frame;
@@ -18,61 +15,10 @@ public class SecondInterface {
     private JComboBox<String> classeEmploiComboBox;
     private JButton chercherEmploiButton;
     private JTable emploiTable;
-    private ActionController controller;
 
-    public SecondInterface(ActionController controller) {
-        this.controller = controller;
+    public SecondInterface() {
         initialize();
-        addListeners();
     }
-
-    private void addListeners() {
-        chercherSeanceButton.addActionListener(e -> chercherSeances());
-        supprimerSeanceButton.addActionListener(e -> supprimerSeance());
-        chercherEmploiButton.addActionListener(e -> chercherEmploi());
-    }
-
-    private void chercherSeances() {
-        String classe = classeSearchComboBox.getSelectedItem().toString();
-        String matiere = matiereSearchField.getText();
-        List<Seance> seances = controller.chercherSeances(classe, matiere);
-        updateSeanceTable(seances);
-    }
-
-    private void supprimerSeance() {
-        try {
-            int idSeance = Integer.parseInt(idSuppressionField.getText());
-            controller.supprimerSeance(idSeance);
-            JOptionPane.showMessageDialog(frame, "La séance a été supprimée avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(frame, "Veuillez saisir un ID valide.", "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void chercherEmploi() {
-        String classe = classeEmploiComboBox.getSelectedItem().toString();
-        List<Seance> emploi = controller.chercherEmploiDuTemps(classe);
-        updateEmploiTable(emploi);
-    }
-
-    private void updateSeanceTable(List<Seance> seances) {
-        DefaultTableModel model = (DefaultTableModel) seanceSearchTable.getModel();
-        model.setRowCount(0);
-        for (Seance seance : seances) {
-            model.addRow(new Object[]{seance.getIdSeance(), seance.getIdClasse(), seance.getJour(),
-                    seance.getMatiere(), seance.getHeureDebut(), seance.getHeureFin(), seance.getIdEnseignant()});
-        }
-    }
-    
-    private void updateEmploiTable(List<Seance> emploi) {
-        DefaultTableModel model = (DefaultTableModel) emploiTable.getModel();
-        model.setRowCount(0);
-        for (Seance seance : emploi) {
-            model.addRow(new Object[]{seance.getIdSeance(), seance.getIdClasse(), seance.getJour(),
-                    seance.getMatiere(), seance.getHeureDebut(), seance.getHeureFin(), seance.getIdEnseignant()});
-        }
-    }
-    
 
     private void initialize() {
         try {
@@ -100,7 +46,9 @@ public class SecondInterface {
 
         frame.setVisible(true);
     }
-
+    public JFrame getFrame() {
+        return frame;
+    }
     private JPanel createChercherSeancePanel() {
         JPanel chercherSeancePanel = new JPanel(new BorderLayout());
         chercherSeancePanel.setBorder(BorderFactory.createTitledBorder("Les Séances de Cours dans la Semaine"));
@@ -179,8 +127,7 @@ public class SecondInterface {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ActionController controller = new ActionController(); // Créez une instance du contrôleur
-            new SecondInterface(controller);
+            new SecondInterface();
         });
     }
 }

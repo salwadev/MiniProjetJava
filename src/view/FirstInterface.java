@@ -1,45 +1,45 @@
+
 package view;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import controller.ActionController;
-import model.Enseignant;
-
+import javax.swing.table.DefaultTableModel;  
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class FirstInterface {
     private JFrame frame;
+    private JTextField matriculeField;
     private JTextField nomField;
+    private JTextField contactField;
     private JButton enregistrerButton;
     private JButton supprimerButton;
     private JButton modifierButton;
     private JButton chercherButton;
+    private JButton requetesButton;
     private JTable enseignantTable;
-    private JTextField prenomField;
-    private JTextField matriculeField;
+
     private JTextField classeField;
     private JTextField matiereField;
     private JComboBox<String> joursComboBox;
     private JComboBox<String> heuresComboBox;
     private JComboBox<String> enseignantComboBox;
     private JButton enregistrerSeanceButton;
+    private JButton requetesSeanceButton;
     private JTable seanceTable;
-    private ActionController controller;
 
-    public FirstInterface(ActionController controller) {
-        this.controller = controller;
+    public FirstInterface() {
         initialize();
         applyDesign();
         addListeners();
     }
 
     private void applyDesign() {
+        // Set UIManager properties for a more professional look and feel
         UIManager.put("TableHeader.font", UIManager.getFont("Label.font").deriveFont(Font.BOLD));
         UIManager.put("Button.background", Color.GREEN);
         UIManager.put("Button.foreground", Color.WHITE);
         UIManager.put("Button.font", UIManager.getFont("Label.font"));
-        UIManager.put("Button.focus", new Color(0, 0, 0, 0));
+        UIManager.put("Button.focus", new Color(0, 0, 0, 0));  // Remove focus border
     }
 
     private void initialize() {
@@ -70,13 +70,24 @@ public class FirstInterface {
         enseignantPanel.setBorder(BorderFactory.createTitledBorder("Formulaire d'enregistrement des enseignants"));
         enseignantPanel.setBackground(Color.PINK);
 
-        JPanel formPanel = new JPanel(new GridLayout(3, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        formPanel.add(new JLabel("Matricule:"));
+        matriculeField = new JTextField();
+        formPanel.add(matriculeField);
+
         formPanel.add(new JLabel("Nom:"));
         nomField = new JTextField();
         formPanel.add(nomField);
 
+        formPanel.add(new JLabel("Contact:"));
+        contactField = new JTextField();
+        formPanel.add(contactField);
+
         chercherButton = new JButton("CHERCHER");
         chercherButton.setBackground(Color.GRAY);
+
+        requetesButton = new JButton("REQUETES");
+        requetesButton.setBackground(Color.ORANGE);
 
         enregistrerButton = new JButton("ENREGISTRER");
         enregistrerButton.setBackground(Color.GREEN);
@@ -90,9 +101,10 @@ public class FirstInterface {
         buttonPanel.add(enregistrerButton);
         buttonPanel.add(supprimerButton);
         buttonPanel.add(modifierButton);
+        buttonPanel.add(requetesButton);
 
         enseignantTable = new JTable(new DefaultTableModel(
-                new Object[]{"Nom"}, 0));
+                new Object[]{"Matricule", "Nom", "Contact"}, 0));
         enseignantTable.setBackground(Color.WHITE);
         JScrollPane tableScrollPane = new JScrollPane(enseignantTable);
 
@@ -114,7 +126,7 @@ public class FirstInterface {
         seancePanel.setBorder(BorderFactory.createTitledBorder("Formulaire d'enregistrement des séances de cours"));
         seancePanel.setBackground(Color.PINK);
 
-        JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel formPanel = new JPanel(new GridLayout(6, 2, 10, 10));
         formPanel.add(new JLabel("Classe:"));
         classeField = new JTextField();
         formPanel.add(classeField);
@@ -137,9 +149,12 @@ public class FirstInterface {
 
         enregistrerSeanceButton = new JButton("ENREGISTRER");
         enregistrerSeanceButton.setBackground(Color.GREEN);
+        requetesSeanceButton = new JButton("REQUETES");
+        requetesSeanceButton.setBackground(Color.ORANGE);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         buttonPanel.add(enregistrerSeanceButton);
+        buttonPanel.add(requetesSeanceButton);
 
         seanceTable = new JTable(new DefaultTableModel(
                 new Object[]{"Classe", "Matière", "Jour", "Heure", "Enseignant"}, 0));
@@ -156,67 +171,48 @@ public class FirstInterface {
     }
 
     private void addListeners() {
-        chercherButton.addActionListener(e -> chercherEnseignant());
-        enregistrerButton.addActionListener(e -> enregistrerEnseignant());
-        supprimerButton.addActionListener(e -> supprimerEnseignant());
-        modifierButton.addActionListener(e -> modifierEnseignant());
-        enregistrerSeanceButton.addActionListener(e -> enregistrerSeance());
+        chercherButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Add logic for chercherButton
+            }
+        });
+
+        requetesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                openSecondInterface();
+            }
+        });
+
+        // Add listeners for other buttons as needed
     }
 
-    private void chercherEnseignant() {
-        String nom = nomField.getText();
-        Enseignant enseignant = controller.chercherEnseignantParNom(nom);
-        // Update the interface based on the search result
-        // Display information in the interface...
-    }
+    private void openSecondInterface() {
+        // Create an instance of SecondInterface
+        SecondInterface secondInterface = new SecondInterface();
 
-    private void enregistrerEnseignant() {
-        String nom = nomField.getText();
-        String prenom = prenomField.getText();
-        String matiere = matiereField.getText();
-        int idEnseignant = Integer.parseInt(matriculeField.getText());
-    
-        // Make sure to call the correct method with the updated parameters
-        controller.enregistrerEnseignant(idEnseignant, nom, prenom, matiere);
-        // Update the interface after registration
-    }
-    
-    
-    private void modifierEnseignant() {
-        int idEnseignant = Integer.parseInt(matriculeField.getText()); // Set idEnseignant to matriculeField
-        String nom = nomField.getText();
-        String prenom = prenomField.getText();
-        String matiere = matiereField.getText();
-        controller.modifierEnseignant(idEnseignant, nom, prenom, matiere);
-        // Update the interface after modification
-    }
+        // Make the SecondInterface visible
+        secondInterface.getFrame().setVisible(true);
 
-    private void supprimerEnseignant() {
-        int idEnseignant = Integer.parseInt(matriculeField.getText());
-        controller.supprimerEnseignant(idEnseignant);
-        // Update the interface after deletion
-    }
-
-
-
-    private void enregistrerSeance() {
-        int idClasse = Integer.parseInt(classeField.getText());
-        int idEnseignant = Integer.parseInt(enseignantComboBox.getSelectedItem().toString());
-        String matiere = matiereField.getText();
-        String jour = joursComboBox.getSelectedItem().toString();
-        String heureDebut = heuresComboBox.getSelectedItem().toString().split("-")[0].trim();
-        String heureFin = heuresComboBox.getSelectedItem().toString().split("-")[1].trim();
-
-        controller.enregistrerSeance(idClasse, idEnseignant, matiere, jour, heureDebut, heureFin);
-        // Update the interface after saving the schedule
+        // Hide the current FirstInterface frame (optional)
+        frame.setVisible(false);
     }
 
     public JFrame getFrame() {
         return frame;
     }
 
+    public JTextField getMatriculeField() {
+        return matriculeField;
+    }
+
     public JTextField getNomField() {
         return nomField;
+    }
+
+    public JTextField getContactField() {
+        return contactField;
     }
 
     public JButton getEnregistrerButton() {
@@ -233,6 +229,10 @@ public class FirstInterface {
 
     public JButton getChercherButton() {
         return chercherButton;
+    }
+
+    public JButton getRequetesButton() {
+        return requetesButton;
     }
 
     public JTextField getClasseField() {
@@ -259,6 +259,10 @@ public class FirstInterface {
         return enregistrerSeanceButton;
     }
 
+    public JButton getRequetesSeanceButton() {
+        return requetesSeanceButton;
+    }
+
     public JTable getEnseignantTable() {
         return enseignantTable;
     }
@@ -269,8 +273,8 @@ public class FirstInterface {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            ActionController actionController = new ActionController();
-            new FirstInterface(actionController);
+            new FirstInterface();
         });
     }
 }
+
